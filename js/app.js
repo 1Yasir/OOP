@@ -5,27 +5,23 @@ const ulElement = document.querySelector("ul");
 const lists = [];
 
 class Todo {
-
-    constructor(task, completed = false, createTime, updateTime) {
+    constructor(task, completed = false) {
         this.task = task;
         this.completed = completed;
-        // this.createTime = new Date.now().toString();
-        // this.updateTime = new Date.now().toString();
+        this.createTime = new Date().toLocaleString();
+        this.updateTime = new Date().toLocaleString();
     }
 
     static addToDo() {
-
         const inputText = inputElement.value.trim();
 
-        if (!inputText) return alert("add task ......");
+        if (!inputText) return alert("Please add a task.");
 
         const newTask = new Todo(inputText);
         lists.push(newTask);
-        inputElement.value = ""
+        inputElement.value = "";
         Todo.render();
-
     }
-
 
     static render() {
         ulElement.innerHTML = "";
@@ -34,28 +30,38 @@ class Todo {
             const li = document.createElement("li");
             li.classList = todo.completed ? "completed" : "";
             li.innerHTML = `
-            <span>${todo.task}</span>
+                <span>${todo.task}</span>
                 <button class="edit" onclick="Todo.editTodoPrompt(${index})">Edit</button>
                 <button onclick="Todo.removeTodo(${index})">Delete</button>
                 <button class="complete" onclick="Todo.toggleComplete(${index})">Complete</button>
-            `
+            `;
 
             ulElement.prepend(li);
-        })
+        });
     }
 
-static removeTodo(index){
-    lists.splice(index , 1);
-    Todo.render();
+    static removeTodo(index) {
+        lists.splice(index, 1);
+        Todo.render();
+    }
 
+    static toggleComplete(index) {
+        lists[index].completed = !lists[index].completed;
+        lists[index].updateTime = new Date().toLocaleString();
+        Todo.render();
+    }
+
+    static editTodoPrompt(index) {
+        const newTask = prompt("Enter your task", lists[index].task);
+
+        if (newTask !== null && newTask.trim()) {
+            lists[index].task = newTask.trim();
+            lists[index].updateTime = new Date().toLocaleString();
+            Todo.render();
+        }
+    }
 }
-
-static toggleComplete(index){
-    lists[index].completed = !lists[index].completed;
-    Todo.render();
-}
-
-}
-
 
 btnElement.addEventListener("click", Todo.addToDo);
+
+document.addEventListener("DOMContentLoaded", Todo.render);
