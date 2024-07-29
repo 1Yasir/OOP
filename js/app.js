@@ -32,7 +32,7 @@ class Todo {
 
         lists.forEach((todo, index) => {
             const li = document.createElement("li");
-            li.classList = todo.completed ? "complete" : "";
+            li.classList = todo.completed ? "completed" : "";
             li.innerHTML = `
             <span>${todo.task}</span>
                 <button class="edit" onclick="Todo.editTodoPrompt(${index})">Edit</button>
@@ -48,6 +48,11 @@ static removeTodo(index){
     lists.splice(index , 1);
     Todo.render();
 
+}
+
+static toggleComplete(index){
+    lists[index].completed = !lists[index].completed;
+    Todo.render();
 }
 
 }
