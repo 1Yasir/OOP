@@ -43,6 +43,13 @@ class Todo {
             ulElement.prepend(li);
         })
     }
+
+static removeTodo(index){
+    lists.splice(index , 1);
+    Todo.render();
+
+}
+
 }
 
 
